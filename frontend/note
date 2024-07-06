@@ -1,0 +1,250 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const CreateTrainer = () => {
+
+
+  const [formData, setFormData] = useState({
+    name: '',
+    commercialsPerHour: '',
+    commercialsPerDay: '',
+    location: '',
+    linkToPDF: 'dsf.com/dsfd',
+    skills: [], // Initialize skills as an array
+    ratings: '',
+    email: '',
+    alternateEmail: '',
+    phoneNumber: '',
+    alternateNumber: '',
+  });
+
+  const [uploadData, setUploadData] =useState({
+    name: '',
+    commercialsPerHour: '',
+    commercialsPerDay: '',
+    location: '',
+    linkToPDF: 'dsf.com/dsfd',
+    skills: [], // Initialize skills as an array
+    ratings: '',
+    email: '',
+    phoneNumber: '',
+  })
+
+  const [skillInput, setSkillInput] = useState(''); // Track the current skill being entered
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSkillInput = (e) => {
+    setSkillInput(e.target.value);
+  };
+
+  const addSkill = () => {
+    if (skillInput.trim() !== '') {
+      setFormData({
+        ...formData,
+        skills: [...formData.skills, skillInput], // Add the skill to the list
+      });
+      setSkillInput(''); // Clear the skill input field
+    }
+  };
+
+  const removeSkill = (index) => {
+    const updatedSkills = [...formData.skills];
+    updatedSkills.splice(index, 1);
+    setFormData({
+      ...formData,
+      skills: updatedSkills,
+    });
+  };
+
+  const [file, setFile] = useState(null);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    // Create a FormData object for file upload
+    const fileFormData = new FormData();
+    fileFormData.append("file", file);
+  
+    // Send the file to the "/upload" endpoint
+    axios
+      .post("http://localhost:5000/upload", fileFormData)
+      .then((fileUploadResponse) => {
+        console.log("File upload success:", fileUploadResponse);
+  
+        // Now, handle trainer creation
+        setUploadData({
+          name: formData.name,
+              commercialsPerHour: formData.commercialsPerHour,
+              commercialsPerDay: formData.commercialsPerDay,
+              location: formData.location,
+              linkToPDF: "sdf.com",
+              skills: formData.skills.join(', '),
+              ratings: formData.ratings,
+              email: formData.email,
+              phoneNumber: formData.phoneNumber,
+        })
+        
+        // Send the trainer data to the "/createtrainer" endpoint
+        axios
+          .post("http://localhost:5000/createtrainer", uploadData)
+          .then((trainerCreationResponse) => {
+            console.log("Trainer creation success:", trainerCreationResponse);
+  
+            // Handle success (e.g., show a success message, clear the form)
+            alert("Trainer created successfully");
+  
+            // Clear the form
+            setFormData({
+              name: "",
+              commercialsPerHour: "",
+              commercialsPerDay: "",
+              location: "",
+              linkToPDF: "",
+              skills: [], // Clear the skills array
+              ratings: "",
+              email: "",
+              phoneNumber: "",
+            });
+          })
+          .catch((trainerCreationError) => {
+            console.error("Trainer creation error:", trainerCreationError);
+          });
+      })
+      .catch((fileUploadError) => {
+        console.error("File upload error:", fileUploadError);
+      });
+  };
+  
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  return (
+<div className="container d-flex justify-content-center align-items-center mt-3">
+  <form onSubmit={handleSubmit} className="bg-light p-4 rounded" style={{ width: '60%' }}>
+  <h3 className='form-group mb-3'>New Trainer?</h3>
+    <div className="form-group row mb-3">
+      <label htmlFor="name" className="col-sm-3 col-form-label">Name:</label>
+      <div className="col-sm-9">
+        <input type="text" className="form-control" name="name" value={formData.name} required onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="commercialsPerHour" className="col-sm-3 col-form-label">Commercials Per Hour:</label>
+      <div className="col-sm-9">
+        <input type="number" name="commercialsPerHour" className="form-control" value={formData.commercialsPerHour} onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="commercialsPerDay" className="col-sm-3 col-form-label">Commercials Per Day:</label>
+      <div className="col-sm-9">
+        <input type="number" name="commercialsPerDay" className="form-control" value={formData.commercialsPerDay} onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="location" className="col-sm-3 col-form-label">Location:</label>
+      <div className="col-sm-9">
+        <input type="text" name="location" value={formData.location} className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="linkToPDF" className="col-sm-3 col-form-label">Link to PDF:</label>
+      <div className="col-sm-9">
+      <input type="file" name="file" onChange={handleFileChange} />      
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="ratings" className="col-sm-3 col-form-label">Ratings:</label>
+      <div className="col-sm-9">
+        <input type="number" name="ratings" value={formData.ratings} className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="email" className="col-sm-3 col-form-label">Email:</label>
+      <div className="col-sm-9">
+        <input type="email" name="email" value={formData.email} required className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="alternateEmail" className="col-sm-3 col-form-label">Alternate Email:</label>
+      <div className="col-sm-9">
+        <input type="email" name="alternateEmail" value={formData.alternateEmail} className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <label htmlFor="phoneNumber" className="col-sm-3 col-form-label">Phone Number:</label>
+      <div className="col-sm-9">
+        <input type="number" name="phoneNumber" value={formData.phoneNumber} required className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+    <div className="form-group row mb-3">
+      <label htmlFor="alternateNumber" className="col-sm-3 col-form-label">Alternate Number:</label>
+      <div className="col-sm-9">
+        <input type="number" name="alternateNumber" value={formData.alternateNumber} className="form-control" onChange={handleChange} />
+      </div>
+    </div>
+    {/* Add similar input fields for other trainer properties here */}
+    
+    <div className="form-group row mb-3">
+      <label htmlFor="skills" className="col-sm-3 col-form-label">Skills:</label>
+      <div className="col-sm-9">
+        <input
+          type="text"
+          className="form-control"
+          name="skills"
+          value={skillInput}
+          onChange={handleSkillInput}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              addSkill();
+            }
+          }}
+        />
+      </div>
+    </div>
+    
+    <div className="form-group row mb-3">
+      <div className="col-sm-3"></div>
+      <div className="col-sm-9">
+        <ul>
+          {formData.skills.map((skill, index) => (
+            <li key={index}>
+              {skill}
+              <span className="remove-skill" onClick={() => removeSkill(index)}>X</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div className="form-group row mb-3">
+      <div className="col-sm-5"></div>
+      <div className="col-sm-7">
+        <button type="submit" className="btn btn-primary">Create Trainer</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+  
+  );
+};
+
+export default CreateTrainer;

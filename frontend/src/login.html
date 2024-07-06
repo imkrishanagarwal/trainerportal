@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    <title>Login Page</title>
+</head>
+<body>
+    {% set background_image_url = url_for('static', filename='images/loginbg.png') %}
+
+    <div class="container-fluid login-background" style="background-image: url('{{ background_image_url }}');">
+        <div class="row h-100">
+            <div class="col-md-4 col-sm-10 align-self-center">
+                <div class="login-modal">
+                    <div class="logo">
+                        {% set logo_image_url = url_for('static', filename='images/logo.png') %}
+                        <img src="{{ logo_image_url }}" alt="Logo">
+                    </div> <br />
+                    <!-- Feedback area for messages -->
+                    <div class="message-area">
+                        <!-- Messages will be displayed here -->
+                    </div>
+                    <form method="POST" action="/login">
+                        <div class="form-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" class="form-control input-field" id="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class= "form-control input-field" name="password" id="password" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                    <!-- "Forgot Password" link -->
+                    <div class="forgot-password">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

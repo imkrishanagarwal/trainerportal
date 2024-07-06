@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* Full-screen background image */
+.login-background {
+  background-size: cover;
+  width: 100vw; /* Set the width to 100vw for full width */
+  height: 100vh;
+}
+.route-background{
+  background-size: cover;
+  width: 100vh; /* Set the width to 100vw for full width */
+  height:100vh;
+}
+.input-field{
+  height: 50px;
+}
+/* Login modal styling */
+.login-modal {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 30px;
+  height: 35vh;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  animation: fade-in 0.5s ease-in-out;
+}
+
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Logo styling */
+.logo img {
+  max-width: 350px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Form input and button styling */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* User icon styling */
+.form-group i {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+
+
+
+
+.searchBar{
+  flex: 1; 
+  margin-right: 5px;
+  font-size: large;
+
+}
+.searchBtn{
+  margin-right: 5px;
+}
+.searchContainer{
+  display: flex; align-items: center;
+  width: 50%;
+}
+.logo{
+  width:200px;
+   
+}
